@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BMI Calculator</title>
+</head>
+<body>
+    <h1>BMI Calculator</h1>
+
+    <form id="bmi-form">
+        <label>
+            Name:
+            <input type="text" id="name" required>
+        </label><br><br>
+
+        <label>
+            Email:
+            <input type="text" id="email" required>
+        </label><br><br>
+
+        <label>
+            Age:
+            <input type="number" id="age" required>
+        </label><br><br>
+
+        <label>
+            Height (cm):
+            <input type="number" id="height" required>
+        </label><br><br>
+
+        <label>
+            Weight (kg):
+            <input type="number" id="weight" required>
+        </label><br><br>
+
+        <label>
+            City:
+            <input type="text" id="city" required>
+        </label><br><br>
+
+        <label>
+            State:
+            <input type="text" id="state" required>
+        </label><br><br>
+
+        <button type="submit">Calculate BMI</button>
+    </form>
+
+    <h2>Result</h2>
+    <p id="result"></p>
+
+    <hr>
+
+    <h2>View All BMI Records</h2>
+    <button onclick="loadRecords()">View Results</button>
+    <ul id="records"></ul>
+
+    <script src="/src/ui/bmi_script.js"></script>
+
+
+</body>
+    
+</html>
