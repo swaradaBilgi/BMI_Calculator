@@ -95,11 +95,43 @@ def fetch_all():
 def fetch_by_id(record_id):
     conn= get_connection()
     row = conn.execute("SELECT * FROM persons WHERE persons_id = ?", (record_id,)).fetchone()
+
+    ret = []
+    if row:
+        row_dict = dict(row)
+        city_data = conn.execute("SELECT * FROM cities WHERE city_id = ?", (row_dict["city_id"],)).fetchone()
+        state_data = conn.execute("SELECT * FROM states WHERE state_id = ?", (city_data["state_id"],)).fetchone()
+        row_dict["city"] = city_data["city_name"]
+        row_dict["state"] = state_data["state_name"]
+
+        ret.append(row_dict)
     conn.close()
 
-    return dict(row) if row else None
+    return ret[0] if ret else None
+
+def fetch_id_by_name(name):
+    conn = get_connection()
+    row = conn.execute("SELECT persons_id FROM persons WHERE name = ?", (name,)).fetchone()
+    conn.close()
+
+    return row[0] if row else None
 
 # update user
+def update_record(record_id, updated_fields):
+    conn = get_connection()
+    row = conn.execute("UPDATE persons SET name=?, email=?, age=?, height_cm=?, weight_kg=?, bmi=?, bmi_category=? WHERE persons_id=?", (
+        updated_fields["name"],
+        updated_fields["email"],
+        updated_fields["age"],
+        updated_fields["height_cm"],
+        updated_fields["weight_kg"],
+        updated_fields["bmi"],
+        updated_fields["bmi_category"],
+        record_id
+    ))
+    conn.commit()
+    conn.close()
+
 
 # delete user
 def delete_record(record_id):

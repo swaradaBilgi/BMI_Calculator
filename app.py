@@ -63,13 +63,44 @@ def get_all_bmi():
     print("Fetched records:", records)
     return jsonify(records)
 
+
 @app.route("/bmi/<int:record_id>", methods=["GET"])
 def get_bmi(record_id):
     record = bmi_db_helper.fetch_by_id(record_id)
     if not record:
         return jsonify({"error": "Record not found"}), 404
     return jsonify(record)
-    
+
+@app.route("/bmi/<int:record_id>", methods=["PATCH"])
+def update_data(record_id):
+    print("Updating record with ID:", record_id)
+    record = bmi_db_helper.fetch_by_id(record_id)
+    if not record:
+        return jsonify({"error": "Record not found"}), 404
+    data = request.get_json()
+    updated_fields = {}
+
+    for field in ['name', 'email', 'age', 'height_cm', 'weight_kg', 'city', 'state']:
+        if field in data:
+            updated_fields[field] = data[field]
+
+    if 'height_cm' in updated_fields or 'weight_kg' in updated_fields:
+        height_cm = updated_fields.get('height_cm', record['height_cm'])
+        weight_kg = updated_fields.get('weight_kg', record['weight_kg'])
+        bmi = bmi_calculator(height_cm, weight_kg)
+        category = get_bmi_category(bmi)
+        updated_fields['bmi'] = bmi
+        updated_fields['bmi_category'] = category
+    bmi_db_helper.update_record(record_id, updated_fields)
+
+    return jsonify(
+        {
+            'id': record_id,
+            'name': data['name'],
+            'bmi': bmi,
+            'bmi_category': category,
+         }
+    ), 201
 
 @app.route("/bmi/<int:record_id>", methods=["DELETE"])
 def delete_bmi(record_id):
