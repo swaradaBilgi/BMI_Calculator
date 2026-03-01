@@ -20,8 +20,9 @@ It allows users to input their weight and height to calculate their BMI and dete
 
 ## How to Use
 1. Clone the repository or download the source code.
-2. Open the `index.html` file in a web browser. 
-3. Enter your weight in kilograms and height in centimeters.
+2. Run the Flask application to start the server using the command: `python app.py`.
+3. Open your web browser and navigate to `http://localhost:5000` to access the BMI calculator.
+3. Enter your data into input fields.
 4. Click the "Calculate BMI" button to see your BMI and weight category.
 5. Click on "View Records" to list out all existing user data and BMI records stored in the database.
 6. To update or delete your BMI records, navigate to the respective buttons in the listed records.
